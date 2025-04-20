@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Payment History - {{ student[1] }}</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5>Student Information</h5>
+        <p>
+            <strong>Class:</strong> {{ student[6] }}<br>
+            <strong>Phone:</strong> <a href="tel:{{ student[2] }}">{{ student[2] }}</a><br>
+            <strong>Parent:</strong> {{ student[3] }}<br>
+            <strong>Parent Phone:</strong> <a href="tel:{{ student[4] }}">{{ student[4] }}</a>
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Record New Payment</h3>
+        <form method="POST" action="{{ url_for('mark_payment', student_id=student[0]) }}">
+            <input type="hidden" name="class_id" value="{{ student[7] }}">
+            <div class="mb-3">
+                <label for="amount" class="form-label">Amount</label>
+                <input type="number" step="0.01" class="form-control" id="amount" name="amount" required>
+            </div>
+            <div class="mb-3">
+                <label for="payment_date" class="form-label">Payment Date</label>
+                <input type="date" class="form-control" id="payment_date" name="payment_date" value="{{ today }}" required>
+            </div>
+
+            <!-- Move button inside the form -->
+            <div class="d-flex justify-content-end mt-3">
+                <button type="submit" class="btn btn-primary" style="width: 180px;">Record Payment</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-6">
+        <h3>Payment History</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in payments %}
+                    <tr>
+                        <td>{{ payment[2].strftime('%Y-%m-%d') }}</td>
+                        <td>Rs.{{ "%.2f"|format(payment[1]) }}</td>
+                        <td>
+                            <a href="{{ url_for('delete_payment', payment_id=payment[0]) }}"
+                               class="btn btn-sm btn-outline-danger"
+                               onclick="return confirm('Are you sure you want to delete this payment?')">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

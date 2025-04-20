@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2 class="fw-bold mb-4">Edit Class</h2>
+    
+    <form method="POST" class="shadow-sm p-4 rounded bg-light">
+        <div class="mb-3">
+            <label for="name" class="form-label fw-bold">Class Name</label>
+            <input type="text" class="form-control" id="name" name="name" 
+                   value="{{ class_data[1] }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="whatsapp_group" class="form-label fw-bold">WhatsApp Group</label>
+            <input type="text" class="form-control" id="whatsapp_group" name="whatsapp_group" 
+                   value="{{ class_data[3] or '' }}">
+        </div>
+        <div class="mb-3">
+            <label for="class_day" class="form-label fw-bold">Class Day</label>
+            <select class="form-control" id="class_day" name="class_day" required>
+                <option value="">Select Day</option>
+                <option value="Sunday" {% if class_data[4] == 'Sunday' %}selected{% endif %}>Sunday</option>
+                <option value="Monday" {% if class_data[4] == 'Monday' %}selected{% endif %}>Monday</option>
+                <option value="Tuesday" {% if class_data[4] == 'Tuesday' %}selected{% endif %}>Tuesday</option>
+                <option value="Wednesday" {% if class_data[4] == 'Wednesday' %}selected{% endif %}>Wednesday</option>
+                <option value="Thursday" {% if class_data[4] == 'Thursday' %}selected{% endif %}>Thursday</option>
+                <option value="Friday" {% if class_data[4] == 'Friday' %}selected{% endif %}>Friday</option>
+                <option value="Saturday" {% if class_data[4] == 'Saturday' %}selected{% endif %}>Saturday</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="class_time" class="form-label fw-bold">Class Time</label>
+            <input type="time" class="form-control" id="class_time" name="class_time" 
+                   value="{{ class_data[5] or '' }}" required>
+        </div>
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary me-2">Update Class</button>
+            <a href="{{ url_for('manage_classes') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

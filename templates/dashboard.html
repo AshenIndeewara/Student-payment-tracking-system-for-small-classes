@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="fw-bold mb-4">Dashboard</h2>
+<div class="row g-4">
+    <div class="col-sm-12 col-md-6 col-lg-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center">
+                <i class="fas fa-chalkboard-teacher fa-3x text-primary mb-3"></i>
+                <h5 class="card-title fw-bold">Classes Overview</h5>
+                <p class="card-text text-muted">
+                    Total Classes: <span class="fw-bold">{{ classes|length }}</span>
+                </p>
+                <a href="{{ url_for('manage_classes') }}" class="btn btn-primary">Manage Classes</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center">
+                <i class="fas fa-user-graduate fa-3x text-success mb-3"></i>
+                <h5 class="card-title fw-bold">Students Overview</h5>
+                <p class="card-text text-muted">
+                    Total Students: <span class="fw-bold">{{ students|length }}</span>
+                </p>
+                <a href="{{ url_for('manage_students') }}" class="btn btn-success">Manage Students</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center">
+                <i class="fas fa-wallet fa-3x text-warning mb-3"></i>
+                <h5 class="card-title fw-bold">Recent Payments</h5>
+                <p class="card-text text-muted">
+                    Last Month Total: <span class="fw-bold">Rs.{{ monthly_total }}</span>
+                </p>
+                <a href="{{ url_for('reports') }}" class="btn btn-warning text-white">Manage Payments</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

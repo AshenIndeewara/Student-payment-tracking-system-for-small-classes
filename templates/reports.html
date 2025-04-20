@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="fw-bold mb-4">Payment Reports</h2>
+
+<!-- Collapsible Section for Date Range Selection -->
+<div class="card mb-4">
+    <div class="card-header">
+        <button class="btn btn-link w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#dateRangeCollapse" aria-expanded="false" aria-controls="dateRangeCollapse">
+            <h5 class="card-title mb-0">Date Range Selection</h5>
+        </button>
+    </div>
+    <div id="dateRangeCollapse" class="collapse">
+        <div class="card-body">
+            <form method="GET" class="row g-3">
+                <div class="col-md-5">
+                    <label for="start_date" class="form-label fw-bold">Start Date</label>
+                    <input type="date" class="form-control" id="start_date" name="start_date" 
+                           value="{{ start_date }}">
+                </div>
+                <div class="col-md-5">
+                    <label for="end_date" class="form-label fw-bold">End Date</label>
+                    <input type="date" class="form-control" id="end_date" name="end_date" 
+                           value="{{ end_date }}">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">&nbsp;</label>
+                    <button type="submit" class="btn btn-primary w-100">Apply</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Collapsible Section for Class Payment Summary -->
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <button class="btn btn-link w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#classPaymentSummaryCollapse" aria-expanded="false" aria-controls="classPaymentSummaryCollapse">
+                    <h5 class="card-title mb-0">Class Payment Summary</h5>
+                </button>
+            </div>
+            <div id="classPaymentSummaryCollapse" class="collapse">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Students</th>
+                                    <th>Date</th>
+                                    <th>Total Payments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for summary in class_summaries %}
+                                <tr>
+                                    <td>{{ summary[0] }}</td>
+                                    <td>{{ summary[1] }}</td>
+                                    <td>{{ summary[2] }}</td>
+                                    <td>{{ summary[3]|currency }}</td>
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td colspan="3">Total Amount</td>
+                                    <td>{{ total_amount|currency }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Collapsible Section for Unpaid Students -->
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <button class="btn btn-link w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#unpaidStudentsCollapse" aria-expanded="false" aria-controls="unpaidStudentsCollapse">
+                    <h5 class="card-title mb-0">Unpaid Students</h5>
+                </button>
+            </div>
+            <div id="unpaidStudentsCollapse" class="collapse">
+                <div class="card-body">
+                    <div class="list-group">
+                        {% for student in unpaid_students %}
+                        <div class="list-group-item">
+                            <h6 class="mb-1">{{ student[0] }}</h6>
+                            <p class="mb-1">Class: {{ student[1] }}</p>
+                            <small class="text-muted">
+                                Last Payment: {{ student[2].strftime('%Y-%m-%d') if student[2] else 'Never' }}
+                            </small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Button to view all unpaid students in modal -->
+                    <button type="button" class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#unpaidStudentsModal">
+                        View All Unpaid Students
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Unpaid Students List -->
+<div class="modal fade" id="unpaidStudentsModal" tabindex="-1" aria-labelledby="unpaidStudentsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="unpaidStudentsModalLabel">Unpaid Students</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                    {% for student in unpaid_students %}
+                    <div class="list-group-item">
+                        <h6 class="mb-1">{{ student[0] }}</h6>
+                        <p class="mb-1">Class: {{ student[1] }}</p>
+                        <small class="text-muted">
+                            Last Payment: {{ student[2].strftime('%Y-%m-%d') if student[2] else 'Never' }}
+                        </small>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

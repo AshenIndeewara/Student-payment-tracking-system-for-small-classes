@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <h1>Home</h1>
+    <p>Welcome to the home page{{username}}!</p>
+
+    <br>
+    <select id="classSelect">
+        {% for class in class_list %}
+            <option value="{{ class.0 }}">{{ class.1 }}</option>
+        {% endfor %}
+    </select>
+    <!-- add stundet button opne the popup and get stundet data Name,phone,PerantName,PerantPhone  -->
+    <button onclick="addStudents()">Add Students</button>
+    <button onclick="addClass()">Add Class</button>
+    <br>
+    <br>
+    <table border="1">
+        <tr>
+            <th>Student Name</th>
+            <th>Phone</th>
+            <th>Parent Name</th>
+            <th>Parent Phone</th>
+        </tr>
+        <!--get all the student data using /get_students/<int:class_id> end point-->
+</body>
+<script>
+    function addStudents() {
+        var class_id = document.getElementById("classSelect").value;
+        var popup = window.open("/add_students?class_id=" + class_id, "Add Students", "width=500,height=500");
+    }
+</script>
+
+</html>
